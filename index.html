@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dokumentasi Kegiatan · Talise</title>
+    <meta
+      name="description"
+      content="Kelola dokumentasi kegiatan Klaster 1–5 dan simpan foto ke Google Drive."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232451e6'/%3E%3Cpath d='M9 13h9l3 4h10v13H9z' fill='white'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="sweetalert2.all.min.js" defer></script>
+    <script src="config.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="#"
+        ><span class="brand-icon">▣</span
+        ><span
+          >Bukti<span class="orange">Foto.</span
+          ><small>KEGIATAN</small></span
+        ></a
+      >
+      <div class="workspace">RUANG KERJA</div>
+      <button class="nav active" id="formNav">
+        ▧ <span>Dokumentasi kegiatan</span></button
+      ><button class="nav" id="historyNav">
+        ▤ <span>Riwayat dokumentasi</span>
+      </button>
+      <div class="sidebar-bottom">
+        <div class="drivebox">
+          <span class="drive-icon">▱</span><strong>Arsip Google Drive</strong>
+          <p>Satu tempat untuk setiap<br />cerita kegiatan.</p>
+          <a
+            href="https://drive.google.com/drive/folders/1DY921amTXL9poEJEQUescpRzcVRN0CUO?usp=sharing"
+            target="_blank"
+            rel="noopener"
+            >Buka folder utama ↗</a
+          >
+        </div>
+        <button id="settings" class="nav">
+          ⚙ <span>Pengaturan koneksi</span>
+        </button>
+        <div class="profile">
+          <span>PT</span>
+          <div>UPTD Puskesmas Talise<small>Dokumentasi internal</small></div>
+        </div>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          Ruang kerja <span>/</span>
+          <strong id="crumb">Dokumentasi kegiatan</strong>
+        </div>
+        <span class="badge" id="connection">Belum terhubung</span>
+      </header>
+      <div class="content">
+        <div class="title-row">
+          <div>
+            <div class="eyebrow">ARSIP KEGIATAN DIGITAL</div>
+            <h1 id="title">Dokumentasikan kegiatan.</h1>
+            <p id="subtitle">
+              Simpan momen kegiatan, tersusun rapi dalam setiap klaster.
+            </p>
+          </div>
+          <div class="date" id="date"></div>
+        </div>
+        <div class="notice" id="notice">
+          <span>ⓘ</span>
+          <div>
+            <strong>Hubungkan penyimpanan Anda</strong><br />Aktifkan Google
+            Sheets dan Drive untuk mulai menyimpan dokumentasi.
+          </div>
+          <button id="connect">Hubungkan</button>
+        </div>
+        <section id="formView">
+          <div class="layout">
+            <form id="report">
+              <div class="card">
+                <div class="card-heading">
+                  <span class="step">01</span>
+                  <div>
+                    <h2>Detail dokumentasi</h2>
+                    <p>Pilih klaster dan beri nama kegiatan Anda.</p>
+                  </div>
+                  <span class="required-note">* Wajib diisi</span>
+                </div>
+                <label>Klaster kegiatan <b>*</b></label>
+                <div
+                  class="clusters"
+                  role="group"
+                  aria-label="Klaster kegiatan"
+                ></div>
+                <label for="folder">Nama folder dokumentasi <b>*</b></label
+                ><input
+                  id="folder"
+                  maxlength="100"
+                  required
+                  placeholder="Contoh: Posyandu Melati – Oktober 2026"
+                  autocomplete="off"
+                />
+                <div class="hint">
+                  Gunakan nama kegiatan yang mudah ditemukan kembali.
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-heading">
+                  <span class="step">02</span>
+                  <div>
+                    <h2>Foto kegiatan</h2>
+                    <p>Unggah foto terbaik dari kegiatan Anda.</p>
+                  </div>
+                  <span id="counter" class="counter">0 / 20 foto</span>
+                </div>
+                <label class="dropzone" id="dropzone" tabindex="0" role="button"
+                  ><input
+                    id="photos"
+                    type="file"
+                    multiple
+                    accept="image/jpeg,image/png,image/webp"
+                    hidden
+                  /><span class="upload-icon">⇧</span
+                  ><strong>Klik untuk memilih atau tarik foto ke sini</strong
+                  ><span
+                    >JPG, PNG, WEBP · Maks. 10 MB/foto · Hingga 20 foto</span
+                  ><span class="choose">Pilih foto</span></label
+                >
+                <div id="thumbnails" class="thumbnails"></div>
+                <div class="hint">
+                  Foto dioptimalkan hingga sisi terpanjang 1.920 px sebelum
+                  dikirim.
+                </div>
+                <div id="progressWrap" hidden>
+                  <div class="progress"><div id="bar"></div></div>
+                  <p id="progressText" role="status" aria-live="polite"></p>
+                </div>
+                <div class="form-footer">
+                  <span id="selectionInfo">Belum ada foto dipilih</span
+                  ><button class="primary" type="submit" id="save">
+                    Simpan dokumentasi <span>↥</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+            <aside class="summary">
+              <div class="summary-card">
+                <div class="eyebrow">LOKASI PENYIMPANAN</div>
+                <h2>Rapi, secara otomatis.</h2>
+                <p>
+                  Foto akan masuk ke folder sesuai klaster dan nama kegiatan.
+                </p>
+                <div class="tree">
+                  <div>▱ <strong>Dokumentasi kegiatan</strong></div>
+                  <div class="tree-child">
+                    ▱ <span id="treeCluster">Pilih klaster</span>
+                    <div class="tree-child selected-folder">
+                      ▱ <span id="treeFolder">Nama folder dokumentasi</span>
+                      <div class="tree-child photo-label">
+                        ▧ <span id="treePhotos">Foto kegiatan</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="sheet-note">
+                  <span>▤</span>
+                  <div>
+                    <strong>Rekap di Google Sheets</strong
+                    ><small
+                      >Klaster, nama folder, jumlah foto,<br />waktu simpan, dan
+                      tautan Drive.</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="tip">
+                <span>✦</span>
+                <div>
+                  <strong>Sedikit rapi, banyak berarti.</strong>
+                  <p>
+                    Nama folder yang jelas membantu tim menemukan dokumentasi
+                    saat dibutuhkan.
+                  </p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+        <section id="historyView" hidden>
+          <div class="card">
+            <div class="history-head">
+              <h2>Dokumentasi tersimpan</h2>
+              <div>
+                <button id="lockHistory" type="button">Kunci riwayat</button>
+                <select id="filter" aria-label="Filter klaster">
+                  <option value="">Semua klaster</option>
+                  <option>Klaster 1</option>
+                  <option>Klaster 2</option>
+                  <option>Klaster 3</option>
+                  <option>Klaster 4</option>
+                  <option>Klaster 5</option></select
+                ><button id="refresh">↻ Perbarui</button>
+              </div>
+            </div>
+            <p class="hint" id="syncStatus">
+              Data dibaca dari Google Sheets. Pembaruan otomatis setiap 30 detik
+              saat halaman ini aktif.
+            </p>
+            <div id="records" class="records">
+              <div class="empty">
+                ▤
+                <h3>Arsip Anda dimulai di sini</h3>
+                <p>Hubungkan penyimpanan untuk menampilkan dokumentasi.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <footer>
+          <span>Dokumenta · UPTD Puskesmas Talise</span
+          ><span>Dokumentasi teratur. Kegiatan tercatat.</span>
+        </footer>
+      </div>
+    </main>
+    <dialog id="config">
+      <form id="configForm">
+        <div class="dialog-head">
+          <h2>Hubungkan penyimpanan</h2>
+          <button type="button" id="closeConfig" aria-label="Tutup">✕</button>
+        </div>
+        <p>
+          Pasang penghubung Apps Script satu kali pada akun Google yang dapat
+          mengedit folder tujuan.
+        </p>
+        <div class="setup-links">
+          <a href="Code.gs" download>Unduh kode Apps Script</a
+          ><a href="panduan.html" target="_blank">Panduan aktivasi ↗</a>
+        </div>
+        <label for="endpoint">URL aplikasi web Apps Script</label
+        ><input
+          id="endpoint"
+          type="url"
+          placeholder="https://script.google.com/macros/s/…/exec"
+          required
+        /><label for="accessKey">Kunci akses</label
+        ><input
+          id="accessKey"
+          type="password"
+          minlength="32"
+          required
+          placeholder="Kunci dari Script Properties"
+        />
+        <p class="hint">
+          URL disimpan pada perangkat ini. Kunci hanya digunakan selama halaman
+          terbuka.
+        </p>
+        <button type="submit" class="primary" id="testConnection">
+          Uji & hubungkan
+        </button>
+        <p id="configError" role="alert"></p>
+      </form>
+    </dialog>
+  </body>
+</html>
